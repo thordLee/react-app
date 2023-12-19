@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Subject() {
+function Subject(props) {
     return (
       <header>
-        <h1>WEB</h1>
-        World Wide Web!
+        <h1><a href="/">{props.title}</a></h1>
+        {props.sub}
       </header>
     );
   }

@@ -1,12 +1,18 @@
 import React from 'react';
 
-function TOC() {
+function TOC(props) {
+  var lists = [];
+  var data = props.data;
+  var i =0;
+  while (i<data.length) {
+    lists.push(<li key={"liId"+data[i].id}><a href={"/content/"+data[i].id}>{data[i].title}</a></li>)
+    i++;
+  }
+
     return (
       <nav>
           <ul>
-              <li><a href="1.html">HTML</a></li>
-              <li><a href="2.html">CSS</a></li>
-              <li><a href="3.html">JavaScript</a></li>
+              {lists}
           </ul>
       </nav>
     );
