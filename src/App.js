@@ -7,24 +7,54 @@ import './App.css';
 
 function App() {
 
-  const [subjectTitle] = useState('WEB');
-  const [subjectSub] = useState('World Wide Web!');
-  var TOCArr = [];
-  TOCArr = [
-    {id:1, title:'HTML', desc:'HTML is for information'},
-    {id:2, title:'CSS', desc:'CSS is for design'},
-    {id:3, title:'JavaScript', desc:'JavaScript is form interative'},
-  ]
+  const [state, setState] = useState({
+      mode : 'read',
+      subject : {title:'WEB', sub:'World Wide Web!'},
+      welcome : {title:'Welcome', desc:'Hello React!'},
+      content : [
+        {id:1, title:'HTML', desc : 'HTML is for information'},
+        {id:2, title:'CSS', desc : 'CSS is for design'},
+        {id:3, title:'JavaScript', desc : 'JavaScript is for interative'},
+      ]
+  });
 
+  function modeChange(md) {
+    const newStateData = {...state, mode:md};
+    setState(newStateData);
+  }
+
+  console.log('App render');
+
+  var _title, _desc = null;
+
+  if (state.mode === 'welcome') {
+    _title = state.welcome.title;
+    _desc = state.welcome.desc;
+  } else if (state.mode === 'read') {
+    _title = state.content[0].title;
+    _desc = state.content[0].desc;
+  }
+
+  console.log(state.mode);
 
   return (
+    
     <div className="App">
-      <Subject 
-        title={subjectTitle} 
-        sub={subjectSub}
-      ></Subject>
-      <TOC data={TOCArr}></TOC>
-      <Content title="HTML" desc="HTML is HyperText Markup Language."></Content>
+      {/*<Subject 
+        title={state.subject.title} 
+        sub={state.subject.sub}
+  ></Subject>*/}
+      <header>
+        <h1><a href="/" onClick={function(e) {
+          console.log(e);
+          e.preventDefault();
+          //state.mode='welcome';
+          modeChange('welcome');
+        }}>{state.subject.title}</a></h1>
+        {state.subject.sub}
+      </header>
+      <TOC data={state.content}></TOC>
+      <Content title={_title} desc={_desc}></Content>
     </div>
   );
 }
