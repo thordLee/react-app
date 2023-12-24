@@ -1,6 +1,7 @@
 import React from 'react';
-console.log('Content render');
-function Content(props) {
+//console.log('Content render');
+
+function ReadContent(props) {
     
     return (
       <article>
@@ -11,4 +12,4 @@ function Content(props) {
     );
   }
 
-export default Content;
+export default ReadContent;

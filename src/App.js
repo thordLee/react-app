@@ -2,59 +2,85 @@
 import { useState } from 'react';
 import Subject from './components/Subject';
 import TOC from './components/TOC';
-import Content from './components/Content';
+import ReadContent from './components/ReadContent';
+import CreateContent from './components/CreateContent';
 import './App.css';
+import Control from './components/Control';
 
 function App() {
 
   const [state, setState] = useState({
-      mode : 'read',
+      mode : 'create',
+      selectedContentId : 2,
       subject : {title:'WEB', sub:'World Wide Web!'},
       welcome : {title:'Welcome', desc:'Hello React!'},
-      content : [
+      contents : [
         {id:1, title:'HTML', desc : 'HTML is for information'},
         {id:2, title:'CSS', desc : 'CSS is for design'},
         {id:3, title:'JavaScript', desc : 'JavaScript is for interative'},
       ]
   });
 
-  function modeChange(md) {
-    const newStateData = {...state, mode:md};
+  function menuChange(md, contentId) {
+    let newStateData = {...state, mode:md};
+    if (contentId !== ''){
+      //newStateData = {...newStateData, selectedContentId:Number(contentId)};
+      newStateData['selectedContentId'] = Number(contentId);
+    }
+
     setState(newStateData);
   }
 
-  console.log('App render');
+  
 
-  var _title, _desc = null;
+  //console.log('App render');
+
+  var _title, _desc, _article = null;
 
   if (state.mode === 'welcome') {
     _title = state.welcome.title;
     _desc = state.welcome.desc;
+    _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
   } else if (state.mode === 'read') {
-    _title = state.content[0].title;
-    _desc = state.content[0].desc;
+    var i=0;
+    while (i<state.contents.length) {
+      var data = state.contents[i];
+      if (data.id===state.selectedContentId) {
+        _title = data.title;
+        _desc = data.desc;
+        break;
+      }
+
+      i++;
+    }
+
+    _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
+    
+  } else if (state.mode === 'create') {
+    _article = <CreateContent></CreateContent>;
   }
 
-  console.log(state.mode);
+  //console.log(state.mode);
 
   return (
     
     <div className="App">
-      {/*<Subject 
+      <Subject 
         title={state.subject.title} 
         sub={state.subject.sub}
-  ></Subject>*/}
-      <header>
-        <h1><a href="/" onClick={function(e) {
-          console.log(e);
-          e.preventDefault();
-          //state.mode='welcome';
-          modeChange('welcome');
-        }}>{state.subject.title}</a></h1>
-        {state.subject.sub}
-      </header>
-      <TOC data={state.content}></TOC>
-      <Content title={_title} desc={_desc}></Content>
+        onChangePage={function() {
+          menuChange('welcome', '');
+        }}
+      ></Subject>
+      <TOC data={state.contents}
+        onChangePage={function(id) {
+          menuChange('read', id);
+        }}
+      ></TOC>
+      <Control onChangeMode={function(mode) {
+        menuChange(mode, '');
+      }}></Control>
+      {_article}
     </div>
   );
 }
