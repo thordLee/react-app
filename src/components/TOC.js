@@ -1,6 +1,12 @@
 import React from 'react';
 
 function TOC(props) {
+  /* 클래스형태의 component에서 사용하는 방식
+  shouldComponentUpdate() {
+
+  }
+  */
+
   var lists = [];
   var data = props.data;
   var i =0;
